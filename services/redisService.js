@@ -1,4 +1,4 @@
-const redisClient = require('./config/redis');
+const redisClient = require('../config/redis');
 
 let useMock = false;
 const mockStore = new Map();

@@ -5,26 +5,31 @@ const redisService = require('../services/redisService');
 
 // 1. Initialize Upload
 const startUpload = async (req, res) => {
-    const { filename, size, chunkSize } = req.body;
-    console.log(`[Backend] Initializing upload for: ${filename} (${size} bytes)`);
-    const uploadId = uuidv4();
-    const totalChunks = Math.ceil(size / chunkSize);
+    try {
+        const { filename, size, chunkSize } = req.body;
+        console.log(`[Backend] Initializing upload for: ${filename} (${size} bytes)`);
+        const uploadId = uuidv4();
+        const totalChunks = Math.ceil(size / chunkSize);
 
-    const fileInfo = {
-        filename,
-        size,
-        totalChunks,
-        chunkSize
-    };
+        const fileInfo = {
+            filename,
+            size,
+            totalChunks,
+            chunkSize
+        };
 
-    // Store metadata
-    await redisService.setEx(`upload:${uploadId}:info`, 3600, JSON.stringify(fileInfo));
+        // Store metadata
+        await redisService.setEx(`upload:${uploadId}:info`, 3600, JSON.stringify(fileInfo));
 
-    // Initialize progress
-    await redisService.hSet(`upload:${uploadId}:progress`, 'uploadedChunks', 0);
+        // Initialize progress
+        await redisService.hSet(`upload:${uploadId}:progress`, 'uploadedChunks', 0);
 
-    console.log(`[Backend] Upload session created: ${uploadId} (Total Chunks: ${totalChunks})`);
-    res.json({ uploadId, totalChunks });
+        console.log(`[Backend] Upload session created: ${uploadId} (Total Chunks: ${totalChunks})`);
+        res.json({ uploadId, totalChunks });
+    } catch (error) {
+        console.error(`[Backend] Error initializing upload:`, error);
+        res.status(500).json({ error: error.message });
+    }
 };
 
 // 2. Upload Chunk
