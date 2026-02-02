@@ -49,23 +49,7 @@
             <div id="resultMessage" class="message"></div>
         </main>
 
-        <section class="info-section">
-            <h2>How it works</h2>
-            <div class="features">
-                <div class="feature-item">
-                    <h3>Chunked Streaming</h3>
-                    <p>Files are split into small chunks on the client-side for reliable transmission.</p>
-                </div>
-                <div class="feature-item">
-                    <h3>Redis Caching</h3>
-                    <p>Each chunk is cached in Redis. If the upload breaks, the server remembers what it received.</p>
-                </div>
-                <div class="feature-item">
-                    <h3>Auto-Resume</h3>
-                    <p>When the connection returns, we only upload the missing chunks, saving time and bandwidth.</p>
-                </div>
-            </div>
-        </section>
+        
     </div>
 
     <script src="app.js"></script>
