@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumable Uploads | Redis Powered</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Resumable File Uploads</h1>
+            <p>Reliable streaming with Redis chunk caching</p>
+        </header>
+
+        <main class="upload-card">
+            <div class="upload-area" id="dropZone">
+                <input type="file" id="fileInput" hidden>
+                <div class="upload-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                    </svg>
+                </div>
+                <p>Drag & drop or <span class="browse-btn">browse files</span></p>
+                <p class="file-info" id="selectedFileName">No file selected</p>
+            </div>
+
+            <div class="controls">
+                <button id="uploadBtn" class="btn btn-primary" disabled>Start Upload</button>
+                <button id="pauseBtn" class="btn btn-secondary" disabled>Simulate Network Failure</button>
+            </div>
+
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <div class="progress-details">
+                    <span id="statusText">Ready to upload</span>
+                    <span id="percentageText">0%</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="chunk-markers" id="chunkMarkers"></div>
+                </div>
+                <div class="stats">
+                    <span id="speedText">0 KB/s</span>
+                    <span id="timeRemainingText">--:--</span>
+                </div>
+            </div>
+
+            <div id="resultMessage" class="message"></div>
+        </main>
+
+        <section class="info-section">
+            <h2>How it works</h2>
+            <div class="features">
+                <div class="feature-item">
+                    <h3>Chunked Streaming</h3>
+                    <p>Files are split into small chunks on the client-side for reliable transmission.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Redis Caching</h3>
+                    <p>Each chunk is cached in Redis. If the upload breaks, the server remembers what it received.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Auto-Resume</h3>
+                    <p>When the connection returns, we only upload the missing chunks, saving time and bandwidth.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
